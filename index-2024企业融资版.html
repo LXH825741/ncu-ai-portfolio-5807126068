@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2024年全球AI企业融资额对比</title>
+<style>
+  :root{
+    --bg-1:#f5f8ff;
+    --bg-2:#eaf1fd;
+    --card:#ffffff;
+    --line:#e2e8f2;
+    --grid:#eef2f9;
+    --axis:#9aa8bd;
+    --text:#1c2b41;
+    --text-sub:#64748b;
+    --us:#d92b2b;      /* 美国 · 红 */
+    --cn:#2563eb;      /* 中国 · 蓝 */
+    --fr:#7c3aed;      /* 法国 · 紫 */
+    --ca:#16a34a;      /* 加拿大 · 绿 */
+    --shadow:0 10px 30px rgba(31,64,120,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Microsoft YaHei","PingFang SC","Segoe UI",-apple-system,"Helvetica Neue",sans-serif;
+    background:radial-gradient(1200px 600px at 15% 0%,#ffffff 0%,var(--bg-1) 45%,var(--bg-2) 100%);
+    color:var(--text);
+    min-height:100vh;
+    padding:36px 20px 26px;
+    display:flex;flex-direction:column;align-items:center;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;max-width:1180px;}
+
+  /* ---------- 标题 ---------- */
+  header{text-align:center;margin-bottom:22px;}
+  h1{
+    font-size:30px;letter-spacing:1px;font-weight:700;line-height:1.3;
+    background:linear-gradient(92deg,#1e3a8a 0%,#2563eb 42%,#7c3aed 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  header p{margin-top:10px;color:var(--text-sub);font-size:14px;letter-spacing:.5px;}
+  header .rule{
+    width:88px;height:4px;border-radius:4px;margin:14px auto 0;
+    background:linear-gradient(90deg,var(--us),var(--cn),var(--fr),var(--ca));
+    opacity:.85;
+  }
+
+  /* ---------- 卡片 ---------- */
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    box-shadow:var(--shadow);
+    padding:22px 26px 20px;
+    position:relative;
+  }
+  .card-head{
+    display:flex;flex-wrap:wrap;gap:12px;
+    align-items:center;justify-content:space-between;
+    margin-bottom:14px;
+  }
+  .card-head h2{font-size:16px;font-weight:600;color:#243b5e;letter-spacing:.4px;}
+  .card-head h2 span{font-weight:400;font-size:13px;color:var(--text-sub);margin-left:8px;}
+
+  /* ---------- 图例 ---------- */
+  .legend{display:flex;flex-wrap:wrap;gap:16px;}
+  .legend-item{display:flex;align-items:center;gap:7px;font-size:13px;color:#334155;}
+  .legend-dot{width:12px;height:12px;border-radius:3px;box-shadow:0 1px 3px rgba(0,0,0,.18);}
+
+  /* ---------- 合计标注 ---------- */
+  .summary{
+    display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;
+    margin:0 0 16px;
+    padding:12px 16px 12px 18px;
+    border-radius:12px;border:1px solid #e6ecf7;
+    background:linear-gradient(96deg,#f7faff 0%,#fdf7f7 100%);
+    position:relative;overflow:hidden;
+  }
+  .summary::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+    background:linear-gradient(180deg,#2563eb,#d92b2b);
+  }
+  .summary .s-label{font-size:13.5px;color:#4a5c78;letter-spacing:.5px;}
+  .summary .s-label::after{content:"：";}
+  .summary .s-value{
+    font-size:24px;font-weight:800;line-height:1.1;
+    color:#b91c1c;font-variant-numeric:tabular-nums;letter-spacing:.5px;
+  }
+  .summary .s-unit{font-size:13.5px;font-weight:600;color:#b91c1c;margin-left:-3px;}
+  .summary .s-sub{
+    font-size:12.5px;color:var(--text-sub);
+    padding-left:14px;margin-left:4px;border-left:1px solid #e2e8f2;
+  }
+  .summary .s-sub b{color:#334155;font-weight:700;font-variant-numeric:tabular-nums;}
+
+  /* ---------- 选项卡 ---------- */
+  .tabs{
+    display:inline-flex;gap:4px;padding:4px;
+    background:#f1f5fc;border:1px solid #e6ecf7;border-radius:12px;
+    margin-bottom:18px;
+  }
+  .tab{
+    appearance:none;border:0;background:transparent;cursor:pointer;
+    font-family:inherit;font-size:13.5px;font-weight:600;color:#5b7597;
+    padding:9px 20px;border-radius:9px;
+    display:flex;align-items:center;gap:7px;
+    transition:background .18s ease,color .18s ease,box-shadow .18s ease;
+  }
+  .tab svg{width:15px;height:15px;flex:0 0 auto;}
+  .tab:hover{color:#2563eb;}
+  .tab[aria-selected="true"]{
+    background:#fff;color:#1d4ed8;
+    box-shadow:0 2px 8px rgba(29,78,216,.16);
+  }
+  .tab:focus-visible{outline:2px solid #2563eb;outline-offset:2px;}
+  .panel[hidden]{display:none;}
+
+  /* ---------- 柱状图 ---------- */
+  .chart{position:relative;padding-left:78px;margin-top:4px;}
+  .y-title{
+    position:absolute;left:0;top:50%;width:22px;text-align:center;
+    transform:translateY(-50%) rotate(-90deg);transform-origin:center center;
+    font-size:12.5px;font-weight:600;color:#465b7a;
+    letter-spacing:1.2px;white-space:nowrap;pointer-events:none;
+  }
+  .y-axis{position:absolute;left:0;top:0;bottom:0;width:78px;}
+  .y-tick{
+    position:absolute;right:8px;transform:translateY(50%);
+    font-size:11.5px;color:var(--axis);font-variant-numeric:tabular-nums;white-space:nowrap;
+  }
+  .plot{
+    position:relative;height:390px;
+    border-left:1px solid var(--line);border-bottom:1px solid #cfd9e8;
+  }
+  .grid{position:absolute;inset:0;pointer-events:none;}
+  .grid-line{position:absolute;left:0;right:0;height:1px;background:var(--grid);}
+  .grid-line.zero{background:#cfd9e8;}
+
+  .bars{position:absolute;inset:0;display:flex;align-items:flex-end;padding:0 6px;}
+  .col{
+    flex:1 1 0;height:100%;position:relative;
+    display:flex;flex-direction:column;justify-content:flex-end;align-items:center;
+  }
+  .bar{
+    width:52%;max-width:44px;min-width:14px;
+    border-radius:7px 7px 3px 3px;cursor:pointer;position:relative;
+    transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
+    box-shadow:0 3px 10px rgba(30,58,95,.16);
+  }
+  .bar::after{
+    content:"";position:absolute;inset:0 0 auto 0;height:38%;
+    border-radius:7px 7px 0 0;
+    background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0));
+    pointer-events:none;
+  }
+  .bar:hover{transform:translateY(-5px);filter:saturate(1.15);box-shadow:0 10px 20px rgba(30,58,95,.26);}
+  .bar:focus{outline:2px solid #2563eb;outline-offset:3px;}
+  .bar-val{
+    font-size:11.5px;font-weight:700;color:#334155;margin-bottom:6px;
+    font-variant-numeric:tabular-nums;white-space:nowrap;pointer-events:none;
+  }
+
+  /* ---------- X 轴标签 ---------- */
+  .x-axis{display:flex;padding:0 6px;}
+  .x-cell{flex:1 1 0;height:74px;position:relative;display:flex;justify-content:center;}
+  .x-name{
+    position:absolute;top:9px;transform:rotate(-38deg);transform-origin:top center;
+    font-size:12px;color:#465b7a;white-space:nowrap;
+  }
+
+  /* ---------- 饼图 ---------- */
+  .pie-wrap{display:flex;flex-wrap:wrap;gap:28px;align-items:center;justify-content:center;padding:6px 0 4px;}
+  .pie-box{flex:0 0 auto;position:relative;}
+  .pie-box svg{width:340px;max-width:78vw;height:auto;display:block;filter:drop-shadow(0 8px 22px rgba(31,64,120,.12));}
+  .pie-center{
+    position:absolute;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;pointer-events:none;text-align:center;
+  }
+  .pie-center .pc-val{
+    font-size:26px;font-weight:800;color:#16243a;
+    font-variant-numeric:tabular-nums;letter-spacing:.5px;line-height:1.1;
+  }
+  .pie-center .pc-unit{font-size:12.5px;font-weight:600;color:#7b8aa3;margin-top:2px;}
+  .pie-center .pc-label{font-size:12px;color:var(--axis);margin-top:6px;letter-spacing:1px;}
+  .slice{cursor:pointer;transition:opacity .18s ease,transform .18s ease;transform-origin:160px 160px;}
+  .pie-wrap.dim .slice{opacity:.34;}
+  .pie-wrap.dim .slice.on{opacity:1;transform:scale(1.035);}
+  .slice-label{
+    font-size:12px;font-weight:700;fill:#fff;pointer-events:none;
+    text-anchor:middle;dominant-baseline:middle;
+  }
+
+  .pie-list{flex:1 1 320px;min-width:280px;display:flex;flex-direction:column;gap:9px;}
+  .pie-row{
+    display:grid;grid-template-columns:14px 1fr auto auto;gap:12px;align-items:center;
+    padding:11px 14px;border:1px solid #eaeff8;border-radius:11px;background:#fbfdff;
+    cursor:default;transition:border-color .18s ease,background .18s ease,box-shadow .18s ease;
+  }
+  .pie-row:hover{border-color:#cfe0f8;background:#f6faff;box-shadow:0 4px 14px rgba(31,64,120,.08);}
+  .pie-row .pr-dot{width:14px;height:14px;border-radius:4px;}
+  .pie-row .pr-name{font-size:14px;font-weight:600;color:#22334d;}
+  .pie-row .pr-name small{display:block;font-size:11.5px;font-weight:400;color:var(--text-sub);margin-top:3px;}
+  .pie-row .pr-amt{font-size:14px;font-weight:700;color:#16243a;font-variant-numeric:tabular-nums;text-align:right;}
+  .pie-row .pr-amt small{display:block;font-size:11px;font-weight:400;color:var(--text-sub);margin-top:3px;}
+  .pie-row .pr-pct{
+    min-width:62px;text-align:right;font-size:15px;font-weight:800;
+    font-variant-numeric:tabular-nums;letter-spacing:.3px;
+  }
+  .pie-row .pr-bar{
+    grid-column:1 / -1;height:5px;border-radius:5px;background:#eef3fa;overflow:hidden;
+  }
+  .pie-row .pr-bar i{display:block;height:100%;border-radius:5px;}
+
+  /* ---------- 折线图 ---------- */
+  .line-box{position:relative;}
+  .line-box svg.lc{width:100%;height:auto;display:block;overflow:visible;}
+  .lc .l-axis-text{font-size:11.5px;fill:#9aa8bd;font-variant-numeric:tabular-nums;}
+  .lc .l-x-text{font-size:11.5px;fill:#5b7291;}
+  .lc .l-x-text.has{fill:#1d4ed8;font-weight:700;}
+  .lc .l-grid{stroke:#eef2f9;stroke-width:1;}
+  .lc .l-grid.zero{stroke:#cfd9e8;}
+  .lc .l-area{fill:url(#lGrad);}
+  .lc .l-line{fill:none;stroke:#2563eb;stroke-width:3;stroke-linejoin:round;stroke-linecap:round;}
+  .lc .l-dot{fill:#fff;stroke:#2563eb;stroke-width:2.6;}
+  .lc .l-val{font-size:11.5px;fill:#1d4ed8;font-weight:700;font-variant-numeric:tabular-nums;}
+  .lc .l-hit{fill:transparent;cursor:pointer;}
+  /* 装饰元素不拦截鼠标，保证悬停命中区始终有效 */
+  .lc .l-area,.lc .l-line,.lc .l-dot,.lc .l-val,
+  .lc .l-axis-text,.lc .l-x-text{pointer-events:none;}
+  .lc .l-guide{stroke:#c7d7ee;stroke-width:1;stroke-dasharray:4 4;opacity:0;transition:opacity .15s ease;}
+  .lc .l-band{fill:#2563eb;opacity:0;transition:opacity .15s ease;pointer-events:none;}
+  .lc .l-guide.on{opacity:1;}
+  .lc .l-band.on{opacity:.05;}
+
+  /* ---------- 提示框 ---------- */
+  .tip{
+    position:fixed;z-index:99;pointer-events:none;
+    opacity:0;transform:translateY(6px);
+    transition:opacity .14s ease, transform .14s ease;
+    background:rgba(255,255,255,.97);
+    border:1px solid #dfe6f2;border-radius:12px;
+    box-shadow:0 14px 34px rgba(23,49,90,.20);
+    padding:11px 14px;max-width:288px;
+  }
+  .tip.show{opacity:1;transform:translateY(0);}
+  .tip .t-name{font-size:14px;font-weight:700;color:#16243a;display:flex;align-items:center;gap:7px;}
+  .tip .t-name i{width:9px;height:9px;border-radius:50%;display:inline-block;flex:0 0 auto;}
+  .tip .t-row{
+    margin-top:7px;font-size:12.5px;color:#4a5c78;
+    display:flex;justify-content:space-between;gap:16px;
+  }
+  .tip .t-row b{color:#16243a;font-weight:700;font-variant-numeric:tabular-nums;text-align:right;}
+  .tip .t-amt{color:#b91c1c;}
+  .tip .t-list{
+    margin-top:8px;padding-top:8px;border-top:1px dashed #e3eaf5;
+    font-size:12px;color:#5b7291;line-height:1.65;
+  }
+
+  /* ---------- 页脚 ---------- */
+  footer{
+    width:100%;max-width:1180px;
+    margin-top:20px;padding:14px 6px 4px;
+    border-top:1px dashed #dde5f1;
+    display:flex;flex-wrap:wrap;gap:10px 22px;
+    align-items:center;justify-content:space-between;
+    font-size:12.5px;color:var(--text-sub);line-height:1.7;
+  }
+  footer b{color:#3b4d68;font-weight:600;}
+  footer .src{display:flex;align-items:center;gap:8px;max-width:640px;}
+  footer .src::before{
+    content:"";flex:0 0 auto;width:5px;height:5px;border-radius:50%;background:#7c3aed;
+    box-shadow:0 0 0 3px rgba(124,58,237,.14);
+  }
+
+  @media (max-width:760px){
+    body{padding:24px 14px 20px;}
+    h1{font-size:22px;}
+    .card{padding:16px 14px 14px;}
+    .plot{height:320px;}
+    .bar-val{font-size:10px;}
+    .x-name{font-size:11px;transform:rotate(-45deg);}
+    .x-cell{height:92px;}
+    .chart{padding-left:62px;}
+    .y-axis{width:62px;}
+    .y-tick{font-size:10.5px;}
+    .y-title{font-size:11px;letter-spacing:.6px;}
+    .summary{padding:10px 12px 10px 14px;gap:8px;}
+    .summary .s-value{font-size:20px;}
+    .summary .s-sub{font-size:11.5px;padding-left:0;margin-left:0;border-left:none;width:100%;}
+    .tabs{width:100%;}
+    .tab{flex:1 1 0;justify-content:center;padding:9px 8px;font-size:12.5px;}
+    .pie-box svg{width:290px;}
+    .pie-row{grid-template-columns:14px 1fr auto;gap:9px;padding:10px 12px;}
+    .pie-row .pr-pct{grid-column:3;grid-row:1 / span 2;min-width:54px;}
+    footer{font-size:12px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>2024年全球AI企业融资额对比</h1>
+    <p>12 家代表性 AI 企业 · 单位：亿美元 · 数据年份 2024</p>
+    <div class="rule"></div>
+  </header>
+
+  <section class="card">
+    <div class="card-head">
+      <h2 id="chartTitle">融资金额分布<span id="hint">悬停柱状条查看详情</span></h2>
+      <div class="legend" id="legend"></div>
+    </div>
+
+    <div class="summary">
+      <span class="s-label">总计融资金额</span>
+      <span class="s-value" id="sumTotal">–</span><span class="s-unit">亿美元</span>
+      <span class="s-sub">共 <b id="sumCount">–</b> 家企业 · 单家平均 <b id="sumAvg">–</b> 亿美元 · 最高 <b id="sumTop">–</b></span>
+    </div>
+
+    <!-- 选项卡 -->
+    <div class="tabs" role="tablist" aria-label="图表切换">
+      <button class="tab" id="tab-bar" role="tab" aria-selected="true" aria-controls="panel-bar" data-tab="bar">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <path d="M3 17V9M8 17V4M13 17v-6M18 17v-9"/><path d="M2 17h16" stroke-width="1.4"/>
+        </svg>柱状图
+      </button>
+      <button class="tab" id="tab-pie" role="tab" aria-selected="false" aria-controls="panel-pie" data-tab="pie" tabindex="-1">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <path d="M10 2.5a7.5 7.5 0 1 1-7.4 8.7"/><path d="M10 2.5v7.5h7.5"/>
+        </svg>国家份额饼图
+      </button>
+      <button class="tab" id="tab-line" role="tab" aria-selected="false" aria-controls="panel-line" data-tab="line" tabindex="-1">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 15l4.5-5 3.5 3L18 5"/><circle cx="6.5" cy="10" r="1.3" fill="currentColor" stroke="none"/><circle cx="10" cy="13" r="1.3" fill="currentColor" stroke="none"/>
+        </svg>累积趋势折线图
+      </button>
+    </div>
+
+    <!-- 面板 1：柱状图 -->
+    <div class="panel" id="panel-bar" role="tabpanel" aria-labelledby="tab-bar">
+      <div class="chart">
+        <span class="y-title">融资金额（亿美元）</span>
+        <div class="y-axis" id="yAxis"></div>
+        <div class="plot">
+          <div class="grid" id="grid"></div>
+          <div class="bars" id="bars"></div>
+        </div>
+      </div>
+      <div class="x-axis" id="xAxis"></div>
+    </div>
+
+    <!-- 面板 2：饼图 -->
+    <div class="panel" id="panel-pie" role="tabpanel" aria-labelledby="tab-pie" hidden>
+      <div class="pie-wrap" id="pieWrap">
+        <div class="pie-box">
+          <svg id="pieSvg" viewBox="0 0 320 320" role="img" aria-label="各国AI融资总额占比饼图"></svg>
+          <div class="pie-center">
+            <div class="pc-val" id="pieTotal">–</div>
+            <div class="pc-unit">亿美元</div>
+            <div class="pc-label">融资总额</div>
+          </div>
+        </div>
+        <div class="pie-list" id="pieList"></div>
+      </div>
+    </div>
+
+    <!-- 面板 3：折线图 -->
+    <div class="panel" id="panel-line" role="tabpanel" aria-labelledby="tab-line" hidden>
+      <div class="line-box">
+        <svg class="lc" id="lineSvg" viewBox="0 0 1000 420" preserveAspectRatio="xMidYMid meet"
+             role="img" aria-label="2024年各月份AI企业融资累积金额变化趋势"></svg>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="src">数据来源：上述企业 2024 年公开披露的融资信息整理（含公开媒体报道），金额单位为亿美元，仅供研究参考</div>
+    <div>数据年份 <b>2024</b> · 金额单位：亿美元 · 共 <b>12</b> 家企业 / <b>3</b> 张图表</div>
+  </footer>
+</div>
+
+<div class="tip" id="tip" role="tooltip" aria-hidden="true"></div>
+
+<script>
+/* =========================================================
+   1. 内置数据（与 ai_funding_data.csv 内容一致，作为离线兜底）
+   ========================================================= */
+const FALLBACK_CSV = `序号,企业名称,国家,细分领域,融资金额(亿美元),日期
+1,OpenAI,美国,大模型,66,2024年10月
+2,Anthropic,美国,大模型,40,2024年3月
+3,Mistral AI,法国,大模型,6.4,2024年6月
+4,智谱AI,中国,大模型,5.2,2024年3月
+5,xAI,美国,大模型,60,2024年5月
+6,百度,中国,自动驾驶,3.5,2024年11月
+7,Cohere,加拿大,大模型,5,2024年7月
+8,Inflection AI,美国,大模型,13,2024年1月
+9,阿里云,中国,云计算,8,2024年5月
+10,Scale AI,美国,数据服务,10,2024年5月
+11,字节跳动,中国,大模型,2.5,2024年4月
+12,Adept,美国,智能体,3.5,2024年3月`;
+
+/* 国家 -> 颜色（美国红 / 中国蓝 / 法国紫 / 加拿大绿）——三个图表共用同一套配色 */
+const COLOR = {'美国':'#d92b2b','中国':'#2563eb','法国':'#7c3aed','加拿大':'#16a34a'};
+const COLOR_FALLBACK = ['#0891b2','#ea580c','#db2777','#65a30d'];
+const COUNTRY_ORDER = ['美国','中国','法国','加拿大'];
+
+const TABS = {
+  bar:  {title:'融资金额分布', hint:'悬停柱状条查看详情'},
+  pie:  {title:'各国融资份额', hint:'悬停扇区或右侧条目查看占比'},
+  line: {title:'累积融资趋势', hint:'悬停查看各月新增与累计金额'}
+};
+
+/* =========================================================
+   2. 工具函数
+   ========================================================= */
+const nice = v => Number.isInteger(v) ? String(v) : String(Math.round(v * 10) / 10);
+
+function shade(hex, percent){
+  const n = parseInt(hex.slice(1), 16);
+  const t = percent < 0 ? 0 : 255, p = Math.abs(percent) / 100;
+  const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  const to = v => Math.round((t - v) * p + v).toString(16).padStart(2, '0');
+  return '#' + to(r) + to(g) + to(b);
+}
+
+/* CSV 解析 */
+function parseCSV(text){
+  const clean = text.replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n').trim();
+  const lines = clean.split('\n').filter(l => l.trim() !== '');
+  const head = lines[0].split(',').map(s => s.trim());
+  const idx = name => head.findIndex(h => h.replace(/\s/g, '') === name);
+
+  const iNo = idx('序号'), iName = idx('企业名称'), iCtry = idx('国家');
+  const iField = idx('细分领域');
+  const iAmt = head.findIndex(h => h.replace(/\s/g, '').startsWith('融资金额'));
+  const iDate = idx('日期');
+
+  return lines.slice(1).map(line => {
+    const c = line.split(',').map(s => s.trim());
+    return {
+      no: parseInt(c[iNo], 10),
+      name: c[iName] || '',
+      country: c[iCtry] || '',
+      field: c[iField] || '',
+      amount: parseFloat(c[iAmt]),
+      date: c[iDate] || ''
+    };
+  }).filter(d => d.name && !isNaN(d.amount));
+}
+
+/* 优先读取同目录 CSV；file:// 直接打开被拦截时回退到内置数据 */
+async function loadData(){
+  try{
+    const res = await fetch('ai_funding_data.csv', {cache:'no-store'});
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const rows = parseCSV(await res.text());
+    if(rows.length) return {rows, from:'file'};
+  }catch(e){ /* 忽略，走内置数据 */ }
+  return {rows: parseCSV(FALLBACK_CSV), from:'builtin'};
+}
+
+/* 从 “2024年10月” 提取月份数字 */
+const monthOf = s => {
+  const m = String(s).match(/(\d{1,2})\s*月/);
+  return m ? Math.min(12, Math.max(1, parseInt(m[1], 10))) : 0;
+};
+
+/* =========================================================
+   3. 提示框
+   ========================================================= */
+const tip = document.getElementById('tip');
+const tipShow = (html, ev) => {
+  tip.innerHTML = html;
+  tip.classList.add('show');
+  tip.setAttribute('aria-hidden', 'false');
+  tipMove(ev);
+};
+const tipMove = ev => {
+  if(!tip.classList.contains('show')) return;
+  const cx = (ev && ev.clientX) || 0, cy = (ev && ev.clientY) || 0;
+  const pad = 16, w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = cx + pad, y = cy + pad;
+  if(x + w > window.innerWidth - 8)  x = cx - w - pad;
+  if(y + h > window.innerHeight - 8) y = cy - h - pad;
+  tip.style.left = Math.max(8, x) + 'px';
+  tip.style.top  = Math.max(8, y) + 'px';
+};
+const tipHide = () => { tip.classList.remove('show'); tip.setAttribute('aria-hidden','true'); };
+document.addEventListener('mousemove', tipMove, {passive:true});
+window.addEventListener('scroll', tipHide, {passive:true});
+window.addEventListener('resize', tipHide);
+
+const rowHTML = (k, v, cls) => `<div class="t-row"><span>${k}</span><b class="${cls || ''}">${v}</b></div>`;
+const nameHTML = (color, name) => `<div class="t-name"><i style="background:${color}"></i>${name}</div>`;
+
+/* =========================================================
+   4. 全局状态与配色
+   ========================================================= */
+const state = {rows:[], from:'builtin', colorMap:{}};
+
+function buildColors(){
+  const countries = COUNTRY_ORDER.filter(c => state.rows.some(r => r.country === c));
+  state.rows.forEach(r => { if(!countries.includes(r.country)) countries.push(r.country); });
+  const map = {};
+  let extra = 0;
+  countries.forEach(c => { map[c] = COLOR[c] || COLOR_FALLBACK[extra++ % COLOR_FALLBACK.length]; });
+  state.colorMap = map;
+  return countries;
+}
+const colorOf = c => state.colorMap[c] || '#64748b';
+
+/* =========================================================
+   5. 图表一：柱状图（金额降序）
+   ========================================================= */
+const Y_MAX = 70, Y_STEP = 10;
+
+function renderBar(){
+  const rows = state.rows;                 // 已按金额降序
+
+  /* 图例 */
+  document.getElementById('legend').innerHTML = buildColors().map(c =>
+    `<span class="legend-item"><span class="legend-dot" style="background:${colorOf(c)}"></span>${c}</span>`
+  ).join('');
+
+  /* Y 轴刻度 + 网格线 */
+  let yTicks = '', gLines = '';
+  for(let v = 0; v <= Y_MAX; v += Y_STEP){
+    const bottom = (v / Y_MAX) * 100;
+    yTicks += `<div class="y-tick" style="bottom:${bottom}%">${v}</div>`;
+    gLines += `<div class="grid-line${v === 0 ? ' zero' : ''}" style="bottom:${bottom}%"></div>`;
+  }
+  document.getElementById('yAxis').innerHTML = yTicks;
+  document.getElementById('grid').innerHTML  = gLines;
+
+  /* 柱体 + X 轴标签 */
+  const bars = document.getElementById('bars'), xAxis = document.getElementById('xAxis');
+  bars.innerHTML = ''; xAxis.innerHTML = '';
+
+  rows.forEach((r, i) => {
+    const h = (r.amount / Y_MAX) * 100, color = colorOf(r.country);
+
+    const col = document.createElement('div');
+    col.className = 'col';
+    col.innerHTML =
+      `<div class="bar-val">${nice(r.amount)}</div>
+       <div class="bar" tabindex="0" role="img" data-bar="${i}"
+            style="height:${h}%;background:linear-gradient(180deg,${color} 0%,${shade(color, -16)} 100%)"
+            aria-label="${r.name}，${r.country}，${nice(r.amount)}亿美元"></div>`;
+    bars.appendChild(col);
+
+    const cell = document.createElement('div');
+    cell.className = 'x-cell';
+    cell.innerHTML = `<span class="x-name">${r.name}</span>`;
+    xAxis.appendChild(cell);
+  });
+
+  const barTip = i => {
+    const r = rows[i];
+    return nameHTML(colorOf(r.country), r.name) +
+      rowHTML('国&nbsp;&nbsp;家', r.country) +
+      rowHTML('细分领域', r.field) +
+      rowHTML('融资金额', nice(r.amount) + ' 亿美元', 't-amt') +
+      rowHTML('时&nbsp;&nbsp;间', r.date);
+  };
+
+  bars.querySelectorAll('.bar').forEach(el => {
+    const i = +el.dataset.bar;
+    el.addEventListener('mouseenter', e => tipShow(barTip(i), e));
+    el.addEventListener('click', e => tipShow(barTip(i), e));
+    el.addEventListener('mouseleave', tipHide);
+    el.addEventListener('focus', () => {
+      const b = el.getBoundingClientRect();
+      tipShow(barTip(i), {clientX: b.left + b.width / 2, clientY: b.top});
+    });
+    el.addEventListener('blur', tipHide);
+  });
+}
+
+/* =========================================================
+   6. 图表二：饼图（按国家汇总占比）
+   ========================================================= */
+function renderPie(){
+  const byCountry = {};
+  state.rows.forEach(r => {
+    byCountry[r.country] = byCountry[r.country] || {country:r.country, amount:0, names:[]};
+    byCountry[r.country].amount += r.amount;
+    byCountry[r.country].names.push(r.name);
+  });
+  const list = Object.values(byCountry).sort((a, b) => b.amount - a.amount);
+  const total = list.reduce((s, d) => s + d.amount, 0);
+
+  document.getElementById('pieTotal').textContent = nice(Math.round(total * 10) / 10);
+
+  /* --- 扇区 --- */
+  const CX = 160, CY = 160, R = 132, r = 78, GAP = 0.016;
+  const pt = (rad, ang) => [CX + rad * Math.cos(ang), CY + rad * Math.sin(ang)];
+  const arcPath = (a0, a1) => {
+    const large = (a1 - a0) > Math.PI ? 1 : 0;
+    const [x0o, y0o] = pt(R, a0), [x1o, y1o] = pt(R, a1);
+    const [x1i, y1i] = pt(r, a1), [x0i, y0i] = pt(r, a0);
+    return `M${x0o.toFixed(2)} ${y0o.toFixed(2)}A${R} ${R} 0 ${large} 1 ${x1o.toFixed(2)} ${y1o.toFixed(2)}` +
+           `L${x1i.toFixed(2)} ${y1i.toFixed(2)}A${r} ${r} 0 ${large} 0 ${x0i.toFixed(2)} ${y0i.toFixed(2)}Z`;
+  };
+
+  let ang = -Math.PI / 2, slices = '', labels = '';
+  list.forEach((d, i) => {
+    const share = d.amount / total;
+    const a0 = ang + GAP, a1 = ang + share * Math.PI * 2 - GAP;
+    const color = colorOf(d.country);
+    slices += `<path class="slice" data-pie="${i}" d="${arcPath(a0, a1)}" fill="${color}"
+                     stroke="#fff" stroke-width="1.5"
+                     aria-label="${d.country}，${nice(d.amount)}亿美元，占比${(share*100).toFixed(1)}%"></path>`;
+    if(share >= 0.055){
+      const mid = (a0 + a1) / 2, [lx, ly] = pt((R + r) / 2, mid);
+      labels += `<text class="slice-label" x="${lx.toFixed(1)}" y="${ly.toFixed(1)}">${(share * 100).toFixed(1)}%</text>`;
+    }
+    d.share = share;
+    d.color = color;
+    ang += share * Math.PI * 2;
+  });
+  document.getElementById('pieSvg').innerHTML = slices + labels;
+
+  /* --- 右侧明细（同时充当图例） --- */
+  document.getElementById('pieList').innerHTML = list.map((d, i) => `
+    <div class="pie-row" data-pie-row="${i}">
+      <span class="pr-dot" style="background:${d.color}"></span>
+      <span class="pr-name">${d.country}<small>${d.names.length} 家企业 · ${d.names.slice(0, 3).join('、')}${d.names.length > 3 ? ' 等' : ''}</small></span>
+      <span class="pr-amt">${nice(d.amount)}<small>亿美元</small></span>
+      <span class="pr-pct" style="color:${d.color}">${(d.share * 100).toFixed(1)}%</span>
+      <span class="pr-bar"><i style="width:${(d.share * 100).toFixed(2)}%;background:${d.color}"></i></span>
+    </div>`).join('');
+
+  const pieWrap = document.getElementById('pieWrap');
+  const pieTip = i => {
+    const d = list[i];
+    return nameHTML(d.color, d.country) +
+      rowHTML('融资总额', nice(Math.round(d.amount * 10) / 10) + ' 亿美元', 't-amt') +
+      rowHTML('占比', (d.share * 100).toFixed(1) + '%') +
+      rowHTML('企业数量', d.names.length + ' 家') +
+      `<div class="t-list">${d.names.join('、')}</div>`;
+  };
+
+  const focus = (i, on) => {
+    pieWrap.classList.toggle('dim', on !== null);
+    document.querySelectorAll('#pieSvg .slice').forEach(p =>
+      p.classList.toggle('on', on !== null && +p.dataset.pie === on)
+    );
+  };
+
+  pieWrap.querySelectorAll('.slice').forEach(p => {
+    const i = +p.dataset.pie;
+    p.addEventListener('mouseenter', e => { focus(i, i); tipShow(pieTip(i), e); });
+    p.addEventListener('mouseleave', () => { focus(null, null); tipHide(); });
+    p.addEventListener('click', e => tipShow(pieTip(i), e));
+  });
+  document.querySelectorAll('#pieList .pie-row').forEach(row => {
+    const i = +row.dataset.pieRow;
+    row.addEventListener('mouseenter', e => { focus(i, i); tipShow(pieTip(i), e); });
+    row.addEventListener('mouseleave', () => { focus(null, null); tipHide(); });
+  });
+}
+
+/* =========================================================
+   7. 图表三：折线图（2024 年各月累积融资额）
+   ========================================================= */
+function renderLine(){
+  const months = Array.from({length:12}, (_, i) => ({month:i + 1, add:0, names:[]}));
+  state.rows.forEach(r => {
+    const m = monthOf(r.date);
+    if(m >= 1 && m <= 12){ months[m - 1].add += r.amount; months[m - 1].names.push(r.name); }
+  });
+  let acc = 0;
+  months.forEach(m => { acc += m.add; m.cum = Math.round(acc * 10) / 10; m.add = Math.round(m.add * 10) / 10; });
+
+  const totalCum = months[11].cum;
+  const Y_MAX_L = Math.ceil(totalCum / 40) * 40;         // 取整到 40 的倍数
+  const Y_STEP_L = Y_MAX_L / 6;
+
+  const W = 1000, H = 420, ML = 62, MR = 26, MT = 26, MB = 46;
+  const PW = W - ML - MR, PH = H - MT - MB;
+  const X = i => ML + (PW / 11) * i;
+  const Y = v => MT + PH - (v / Y_MAX_L) * PH;
+
+  let grid = '', yText = '', xText = '', hits = '', bands = '';
+  for(let k = 0; k <= 6; k++){
+    const v = Y_STEP_L * k, y = Y(v);
+    grid += `<line class="l-grid${k === 0 ? ' zero' : ''}" x1="${ML}" y1="${y.toFixed(1)}" x2="${W - MR}" y2="${y.toFixed(1)}"/>`;
+    yText += `<text class="l-axis-text" x="${ML - 12}" y="${(y + 4).toFixed(1)}" text-anchor="end">${nice(v)}</text>`;
+  }
+  months.forEach((m, i) => {
+    const x = X(i);
+    xText += `<text class="l-x-text${m.add > 0 ? ' has' : ''}" x="${x.toFixed(1)}" y="${H - MB + 24}" text-anchor="middle">${m.month}月</text>`;
+    hits += `<rect class="l-hit" data-line="${i}" x="${(x - PW / 22).toFixed(1)}" y="${MT}" width="${(PW / 11).toFixed(1)}" height="${PH}"/>`;
+  });
+
+  /* 面积 + 折线 + 数据点 */
+  const pts = months.map((m, i) => [X(i), Y(m.cum)]);
+  const linePath = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+  const areaPath = `${linePath}L${pts[11][0].toFixed(1)} ${Y(0).toFixed(1)}L${pts[0][0].toFixed(1)} ${Y(0).toFixed(1)}Z`;
+
+  let dots = '', vals = '';
+  months.forEach((m, i) => {
+    const [x, y] = pts[i];
+    dots += `<circle class="l-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5"/>`;
+    if(m.add > 0) vals += `<text class="l-val" x="${x.toFixed(1)}" y="${(y - 14).toFixed(1)}" text-anchor="middle">${nice(m.cum)}</text>`;
+  });
+
+  /* 悬停辅助线 */
+  let guides = '';
+  months.forEach((m, i) => {
+    const x = X(i);
+    guides += `<rect class="l-band" data-band="${i}" x="${(x - PW / 22).toFixed(1)}" y="${MT}" width="${(PW / 11).toFixed(1)}" height="${PH}"/>` +
+              `<line class="l-guide" data-guide="${i}" x1="${x.toFixed(1)}" y1="${MT}" x2="${x.toFixed(1)}" y2="${Y(0).toFixed(1)}"/>`;
+  });
+
+  document.getElementById('lineSvg').innerHTML = `
+    <defs>
+      <linearGradient id="lGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#2563eb" stop-opacity=".26"/>
+        <stop offset="100%" stop-color="#2563eb" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <text x="${ML - 12}" y="${MT - 6}" text-anchor="end" class="l-axis-text">亿美元</text>
+    ${grid}${yText}${xText}${guides}${hits}
+    <path class="l-area" d="${areaPath}"/>
+    <path class="l-line" d="${linePath}"/>
+    ${dots}${vals}`;
+
+  const lineTip = i => {
+    const m = months[i];
+    return nameHTML('#2563eb', '2024年' + m.month + '月') +
+      rowHTML('当月新增', (m.add > 0 ? nice(m.add) + ' 亿美元' : '无新增事件')) +
+      rowHTML('融资事件', m.names.length + ' 起') +
+      rowHTML('累计金额', nice(m.cum) + ' 亿美元', 't-amt') +
+      rowHTML('占全年', ((m.cum / totalCum) * 100).toFixed(1) + '%') +
+      (m.names.length ? `<div class="t-list">${m.names.join('、')}</div>` : '');
+  };
+
+  const svg = document.getElementById('lineSvg');
+  const highlight = on => {
+    svg.querySelectorAll('.l-guide').forEach(l => l.classList.toggle('on', on !== null && +l.dataset.guide === on));
+    svg.querySelectorAll('.l-band').forEach(b => b.classList.toggle('on', on !== null && +b.dataset.band === on));
+  };
+
+  svg.querySelectorAll('.l-hit').forEach(rect => {
+    const i = +rect.dataset.line;
+    rect.addEventListener('mouseenter', e => { highlight(i); tipShow(lineTip(i), e); });
+    rect.addEventListener('mouseleave', () => { highlight(null); tipHide(); });
+  });
+}
+
+/* =========================================================
+   8. 选项卡切换
+   ========================================================= */
+function switchTab(name){
+  Object.keys(TABS).forEach(k => {
+    const tab = document.getElementById('tab-' + k);
+    const panel = document.getElementById('panel-' + k);
+    const on = k === name;
+    tab.setAttribute('aria-selected', on ? 'true' : 'false');
+    tab.tabIndex = on ? 0 : -1;
+    panel.hidden = !on;
+  });
+  document.getElementById('chartTitle').firstChild.nodeValue = TABS[name].title;
+  document.getElementById('hint').textContent = TABS[name].hint;
+  document.getElementById('legend').style.display = (name === 'line') ? 'none' : '';
+  tipHide();
+}
+
+function bindTabs(){
+  const names = Object.keys(TABS);
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+    tab.addEventListener('keydown', e => {
+      const i = names.indexOf(tab.dataset.tab);
+      let n = null;
+      if(e.key === 'ArrowRight') n = names[(i + 1) % names.length];
+      if(e.key === 'ArrowLeft')  n = names[(i - 1 + names.length) % names.length];
+      if(n){ e.preventDefault(); switchTab(n); document.getElementById('tab-' + n).focus(); }
+    });
+  });
+}
+
+/* =========================================================
+   9. 启动
+   ========================================================= */
+function renderSummary(){
+  const rows = state.rows;
+  const total = rows.reduce((s, r) => s + r.amount, 0);
+  document.getElementById('sumTotal').textContent = nice(Math.round(total * 10) / 10);
+  document.getElementById('sumCount').textContent = rows.length;
+  document.getElementById('sumAvg').textContent   = nice(Math.round(total / rows.length * 10) / 10);
+  document.getElementById('sumTop').textContent   = rows[0].name + ' ' + nice(rows[0].amount);
+}
+
+loadData().then(({rows, from}) => {
+  state.rows = [...rows].sort((a, b) => b.amount - a.amount);   // 金额降序
+  state.from = from;
+  renderSummary();
+  renderBar();
+  renderPie();
+  renderLine();
+  bindTabs();
+  switchTab('bar');                                            // 默认显示柱状图
+  if(from === 'file') document.getElementById('hint').textContent = '已读取 ai_funding_data.csv · ' + TABS.bar.hint;
+});
+</script>
+</body>
+</html>

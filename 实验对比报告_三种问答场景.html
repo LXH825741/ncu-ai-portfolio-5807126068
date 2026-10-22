@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>实验对比报告：三种知识问答场景效果对比</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2128; --border:#30363d;
+    --text:#e6edf3; --text-dim:#9aa4b2; --accent:#58a6ff; --accent2:#3fb950;
+    --warn:#d29922; --danger:#f85149; --purple:#bc8cff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:40px 24px; background:var(--bg); color:var(--text);
+    font-family:"Microsoft YaHei","PingFang SC","Segoe UI",system-ui,sans-serif;
+    line-height:1.7; font-size:15px;
+  }
+  .wrap{max-width:1180px; margin:0 auto;}
+  h1{
+    font-size:27px; margin:0 0 6px; letter-spacing:.5px;
+    background:linear-gradient(90deg,#58a6ff,#bc8cff);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .sub{color:var(--text-dim); font-size:13.5px; margin-bottom:26px;}
+  h2{
+    font-size:19px; margin:38px 0 14px; padding-left:12px;
+    border-left:4px solid var(--accent);
+  }
+  h3{font-size:16px; margin:24px 0 10px; color:var(--purple);}
+  p{margin:10px 0;}
+  .card{
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    padding:18px 20px; margin:14px 0;
+  }
+  table{
+    width:100%; border-collapse:collapse; margin:14px 0; font-size:13.5px;
+    background:var(--panel); border-radius:10px; overflow:hidden;
+  }
+  thead th{
+    background:var(--panel2); color:var(--text); text-align:left;
+    padding:12px 14px; font-weight:600; border-bottom:1px solid var(--border);
+    white-space:nowrap;
+  }
+  thead th:first-child{width:150px;}
+  td{
+    padding:11px 14px; border-bottom:1px solid var(--border);
+    vertical-align:top; color:var(--text);
+  }
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:#1b2129;}
+  td:first-child{color:var(--text-dim); font-weight:600;}
+  .good{color:var(--accent2); font-weight:600;}
+  .mid{color:var(--warn); font-weight:600;}
+  .bad{color:var(--danger); font-weight:600;}
+  .tag{
+    display:inline-block; padding:1px 8px; border-radius:20px; font-size:11.5px;
+    border:1px solid var(--border); color:var(--text-dim); margin-right:4px;
+  }
+  .concl{
+    background:linear-gradient(180deg,#161b22,#1a2030);
+    border:1px solid var(--accent); border-radius:10px; padding:18px 20px; margin:16px 0;
+  }
+  ul{margin:8px 0; padding-left:22px;}
+  li{margin:5px 0;}
+  .foot{
+    margin-top:40px; padding-top:16px; border-top:1px solid var(--border);
+    color:var(--text-dim); font-size:12.5px;
+  }
+  code{
+    background:#22272e; padding:1px 6px; border-radius:4px;
+    font-family:Consolas,monospace; font-size:12.5px; color:#79c0ff;
+  }
+  .scenario{
+    border-left:3px solid var(--accent); padding-left:14px; margin:16px 0;
+  }
+  .scenario.s2{border-left-color:var(--accent2);}
+  .scenario.s3{border-left-color:var(--purple);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>实验对比报告：三种知识问答场景效果对比</h1>
+  <div class="sub">对比对象：无知识库 · WorkBuddy 本地知识库 · ima 在线知识库 ｜ 测试主题：医疗健康问答（10 个常见健康问题）</div>
+
+  <div class="card">
+    <strong>实验说明</strong>
+    <p>本报告以同一份文档 <code>医疗健康问答.txt</code>（含普通感冒、高血压、2 型糖尿病、急性胃肠炎、偏头痛、颈椎病、失眠、口腔溃疡、过敏性鼻炎、轻度脂肪肝共 10 个条目）为素材，分别在三类问答场景下测试其回答表现，从准确性、来源标注、幻觉风险、多轮对话、管理便捷性、协作共享、适用场景七个维度进行对比。</p>
+  </div>
+
+  <h2>一、对比结果总表</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>对比维度</th>
+        <th>方案一：无知识库</th>
+        <th>方案二：WorkBuddy 本地知识库</th>
+        <th>方案三：ima 在线知识库</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>回答准确性<br>（是否基于真实文档）</td>
+        <td><span class="bad">较低</span><br>仅依赖模型自身训练知识，无法核对用户提供的原始文档，与特定文档的表述、结构、条目编号无法对齐。</td>
+        <td><span class="good">高</span><br>通过 <code>@file</code> 引用本地文件，逐条读取原文作答，回答与文档内容严格对应，可精确到条目（如【3】2 型糖尿病）。</td>
+        <td><span class="good">高</span><br>基于云端知识库检索作答，实测召回同一份 <code>医疗健康问答.txt</code> 并定位到【3】条目，与源文件内容一致。</td>
+      </tr>
+      <tr>
+        <td>信息来源标注<br>（是否标注引用）</td>
+        <td><span class="bad">无法标注</span><br>没有引用来源，只能给出通用知识，无法说明"来自哪份文档的哪一条"。</td>
+        <td><span class="good">可标注</span><br>可明确标注文件名、条目编号（如"Q2""【3】"），支持在回答末尾附【本回答基于知识库条目：Qx】。</td>
+        <td><span class="good">可标注</span><br>返回检索命中的文档标题与片段，可定位到条目，天然支持来源溯源。</td>
+      </tr>
+      <tr>
+        <td>幻觉风险<br>（是否编造信息）</td>
+        <td><span class="bad">较高</span><br>无原文约束，易凭通用知识作答，可能补充文档中并不存在的内容，且难以自证，用户不易察觉。</td>
+        <td><span class="good">低</span><br>受文件内容约束，明确"文件中没有的即说明没有"，可有效抑制编造（本轮曾如实标注水果/运动信息不足）。</td>
+        <td><span class="good">低</span><br>以检索到的知识库内容为依据生成，越权编造空间小；但若检索未命中，仍需依赖模型兜底，存在一定风险。</td>
+      </tr>
+      <tr>
+        <td>多轮对话能力</td>
+        <td><span class="mid">强（但无锚点）</span><br>上下文连贯、追问体验流畅，但每轮均无文档锚定，多轮后与原始文档的偏离会累积。</td>
+        <td><span class="mid">强</span><br>可在同一会话中持续引用该文件，多轮追问均基于同一文档，一致性高。</td>
+        <td><span class="mid">强（需重检索）</span><br>支持多轮追问，但每轮通常需重新检索知识库，跨轮次的话题延续依赖平台实现。</td>
+      </tr>
+      <tr>
+        <td>知识库管理便捷性</td>
+        <td><span class="good">无需管理</span><br>零配置、开箱即用，但也没有"知识库"概念，谈不上管理。</td>
+        <td><span class="mid">中</span><br>文件放在本地工作区即用，随取随改，无需上传；但仅限本机/本工作区，缺乏统一的版本、标签、增删管理界面。</td>
+        <td><span class="good">高</span><br>云端统一管理，支持知识库分类、标签、收藏、批量上传与检索，管理能力最完整。</td>
+      </tr>
+      <tr>
+        <td>协作共享能力</td>
+        <td><span class="bad">无</span><br>无共享载体，回答仅存在于当前会话。</td>
+        <td><span class="bad">弱</span><br>本地文件共享依赖手动发送（如邮件、IM 传文件），无在线协作与权限控制。</td>
+        <td><span class="good">强</span><br>知识库可云端共享、多人协作、跨设备访问，权限可控，天然支持团队共建。</td>
+      </tr>
+      <tr>
+        <td>适用场景</td>
+        <td>通用知识问答、创意发散、无固定文档依据的开放问题。</td>
+        <td>个人本地文档的即时问答、敏感/机密资料不外传、临时性分析。</td>
+        <td>团队知识沉淀与共享、跨设备长期使用、需要持续积累与统一检索的场景。</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>二、实测观察记录</h2>
+
+  <h3>场景一：无知识库</h3>
+  <div class="scenario">
+    <p>模型直接作答，能给出通用的糖尿病饮食常识，但<b>无法引用该文档</b>，也无法保证与文档中【3】条目的表述一致；对"文件中是否有相关信息"这一判断无从谈起，存在补充文档外内容而不自知的风险。</p>
+  </div>
+
+  <h3>场景二：WorkBuddy 本地知识库（@file）</h3>
+  <div class="scenario s2">
+    <p>通过 <code>@医疗健康问答.txt</code> 引用后，模型读取原文并<b>严格对齐条目</b>：能指出水果与运动的具体建议文件中未给出，明确标注"信息不足"，并可附条目编号（Q3／Q2／Q10）。幻觉风险最低，溯源最清晰。</p>
+  </div>
+
+  <h3>场景三：ima 在线知识库</h3>
+  <div class="scenario s3">
+    <p>实测检索"2 型糖尿病 饮食 运动"，云端知识库返回同一份 <code>医疗健康问答.txt</code>，命中条目【3】且片段与源文件一致。说明 ima 在<b>内容准确性与来源召回</b>上与本地知识库相当，同时具备云端管理与共享优势。</p>
+  </div>
+
+  <h2>三、结论与建议使用场景</h2>
+
+  <div class="concl">
+    <h3 style="margin-top:0;">方案一 · 无知识库 —— 建议用于</h3>
+    <ul>
+      <li>没有特定文档依据的<b>通用知识问答</b>、头脑风暴、创意写作；</li>
+      <li>时效性强、无需溯源的一次性咨询；</li>
+      <li>注意：涉及<b>必须严格依据某份文档</b>的任务（如本例的医疗问答）时，不建议单独使用。</li>
+    </ul>
+  </div>
+
+  <div class="concl">
+    <h3 style="margin-top:0;">方案二 · WorkBuddy 本地知识库 —— 建议用于</h3>
+    <ul>
+      <li><b>个人本地文档</b>的即时问答与分析，随改随问；</li>
+      <li>资料涉及<b>隐私或商业机密</b>、不希望上传云端的场景；</li>
+      <li>需要<b>严格依据原文、逐条标注来源</b>的高准确度任务（如本报告中的医疗条目问答）；</li>
+      <li>注意：跨设备、多人协作是其短板。</li>
+    </ul>
+  </div>
+
+  <div class="concl">
+    <h3 style="margin-top:0;">方案三 · ima 在线知识库 —— 建议用于</h3>
+    <ul>
+      <li><b>团队 / 组织</b>的知识沉淀与共享，多人共建共查；</li>
+      <li>需要在<b>多设备、长时间</b>持续积累和统一检索的场景；</li>
+      <li>希望获得完整<b>知识库管理</b>（分类、标签、收藏、批量上传）的场景；</li>
+      <li>注意：非公开资料上云前需评估权限与合规要求。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <p style="margin:0;"><strong>综合建议：</strong>三者并非替代关系，而是互补。<span class="tag">要准确溯源</span><span class="tag">资料保密</span>首选<b>本地知识库</b>；<span class="tag">要团队共享</span><span class="tag">跨设备沉淀</span>选<b>ima 在线知识库</b>；<span class="tag">通用问答</span><span class="tag">无文档依据</span>时可用<b>无知识库</b>直接作答。对准确性要求高的任务，建议采用"知识库 + 来源标注"的组合方式。</p>
+  </div>
+
+  <div class="foot">
+    报告生成时间：2026-10-10 ｜ 测试素材：医疗健康问答.txt（10 个常见健康问题）<br>
+    说明：本报告为工具能力对比，其中医疗内容为一般性健康科普，不构成诊疗建议。
+  </div>
+
+</div>
+</body>
+</html>

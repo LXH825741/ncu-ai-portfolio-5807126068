@@ -1,0 +1,113 @@
+<Slide style={{
+    width: '1280px',
+    height: '720px',
+    background: '#F4F7FF',
+    padding: '24px 64px',
+    flexDirection: 'column',
+}}>
+    <Box style={{ height: 96, flexDirection: 'row', alignItems: 'center', gap: 16 }}>
+        <Box style={{ width: 6, height: 44, background: '#2563EB' }} />
+        <Box style={{ flexDirection: 'column', justifyContent: 'center' }}>
+            <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1E3A8A', lineHeight: 1.25 }}>工具三 · 演示与创意生成</Text>
+            <Text style={{ fontSize: 15, color: 'rgba(30,58,138,0.65)', lineHeight: 1.5 }}>代表工具：Gamma · 可画 · 剪映 · 即梦</Text>
+        </Box>
+    </Box>
+    <Box style={{ height: 516, flexDirection: 'row', gap: 24 }}>
+        <Box style={{
+            width: 384,
+            height: 516,
+            background: '#1E3A8A',
+            borderRadius: 16,
+            padding: 28,
+            flexDirection: 'column',
+        }}>
+            <Box style={{
+                width: 68,
+                height: 68,
+                borderRadius: 34,
+                background: '#2563EB',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}>
+                <FAIcon name='magic' style={{ fill: '#F4F7FF', width: 34, height: 34 }} />
+            </Box>
+            <Box style={{ height: 18 }} />
+            <Text style={{ fontSize: 15, color: 'rgba(255,255,255,0.6)', lineHeight: 1.4 }}>工具三</Text>
+            <Text style={{ fontSize: 26, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1.3 }}>演示与创意生成</Text>
+            <Box style={{ height: 14 }} />
+            <Text style={{ fontSize: 17, color: 'rgba(255,255,255,0.82)', lineHeight: 1.55 }}>把一句话想法，直接变成能展示的成品</Text>
+            <Box style={{ height: 16 }} />
+            <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                <Text style={{ fontSize: 14, fontWeight: 'bold', color: 'rgba(255,255,255,0.65)', lineHeight: 1.4 }}>上手难度</Text>
+                <Text style={{ fontSize: 16, color: '#F4F7FF', lineHeight: 1.4 }}>★★★</Text>
+                <Text style={{ fontSize: 14, color: 'rgba(255,255,255,0.7)', lineHeight: 1.4 }}>需练习提示词与审美</Text>
+            </Box>
+            <Box style={{ flex: 1 }} />
+            <Box style={{ width: 68, height: 2, background: 'rgba(255,255,255,0.35)' }} />
+            <Box style={{ height: 18 }} />
+            <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'rgba(255,255,255,0.65)', lineHeight: 1.4 }}>适用场景</Text>
+            <Box style={{ height: 10 }} />
+            <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                <Box style={{ width: 8, height: 8, background: '#2563EB' }} />
+                <Text style={{ fontSize: 16, color: 'rgba(255,255,255,0.92)' }}>小组作业与课程汇报</Text>
+            </Box>
+            <Box style={{ height: 8 }} />
+            <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                <Box style={{ width: 8, height: 8, background: '#2563EB' }} />
+                <Text style={{ fontSize: 16, color: 'rgba(255,255,255,0.92)' }}>社团招新与活动海报</Text>
+            </Box>
+            <Box style={{ height: 8 }} />
+            <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                <Box style={{ width: 8, height: 8, background: '#2563EB' }} />
+                <Text style={{ fontSize: 16, color: 'rgba(255,255,255,0.92)' }}>课程展示短视频</Text>
+            </Box>
+        </Box>
+        <Box style={{ width: 744, height: 516, flexDirection: 'column' }}>
+            <Box style={{ width: 744, height: 250, borderRadius: 16, overflow: 'hidden', background: '#FFFFFF' }}>
+                <Image
+                    src='assets/tool3_creating.png'
+                    style={{ width: 744, height: 250, objectFit: 'cover' }}
+                />
+            </Box>
+            <Box style={{ height: 16 }} />
+            <Box style={{
+                marginTop: 'auto',
+                background: '#FFFFFF',
+                border: '1px solid rgba(37,99,235,0.22)',
+                borderRadius: 14,
+                padding: '18px 22px',
+                flexDirection: 'column',
+            }}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#2563EB', lineHeight: 1.4 }}>3 个核心功能</Text>
+                <Box style={{ height: 12 }} />
+                <Box style={{ flexDirection: 'row', gap: 12, alignItems: 'flex-start' }}>
+                    <FAIcon name='copy' style={{ fill: '#2563EB', width: 22, height: 22 }} />
+                    <Box style={{ flexDirection: 'column' }}>
+                        <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1E3A8A', lineHeight: 1.4 }}>一键成稿</Text>
+                        <Text style={{ fontSize: 16, color: '#111827', lineHeight: 1.5 }}>说清主题、页数与风格，几分钟拿到可开讲的 PPT 初稿</Text>
+                    </Box>
+                </Box>
+                <Box style={{ height: 12 }} />
+                <Box style={{ flexDirection: 'row', gap: 12, alignItems: 'flex-start' }}>
+                    <FAIcon name='image' style={{ fill: '#2563EB', width: 22, height: 22 }} />
+                    <Box style={{ flexDirection: 'column' }}>
+                        <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1E3A8A', lineHeight: 1.4 }}>海报与图表</Text>
+                        <Text style={{ fontSize: 16, color: '#111827', lineHeight: 1.5 }}>招新海报、活动宣传图与数据可视化，描述清楚即可出图</Text>
+                    </Box>
+                </Box>
+                <Box style={{ height: 12 }} />
+                <Box style={{ flexDirection: 'row', gap: 12, alignItems: 'flex-start' }}>
+                    <FAIcon name='video' style={{ fill: '#2563EB', width: 22, height: 22 }} />
+                    <Box style={{ flexDirection: 'column' }}>
+                        <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1E3A8A', lineHeight: 1.4 }}>短视频与配图</Text>
+                        <Text style={{ fontSize: 16, color: '#111827', lineHeight: 1.5 }}>脚本、分镜、配图与字幕一起生成，剪辑节奏先出方案</Text>
+                    </Box>
+                </Box>
+            </Box>
+        </Box>
+    </Box>
+    <Box style={{ height: 60, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Text style={{ fontSize: 14, color: 'rgba(30,58,138,0.45)' }}>大学生必备AI工具使用指南</Text>
+        <Text style={{ fontSize: 14, color: 'rgba(30,58,138,0.45)' }}>04 / 05</Text>
+    </Box>
+</Slide>

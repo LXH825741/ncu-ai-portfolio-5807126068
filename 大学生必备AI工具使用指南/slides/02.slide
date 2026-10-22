@@ -1,0 +1,99 @@
+<Slide style={{
+    width: '1280px',
+    height: '720px',
+    background: '#F4F7FF',
+    padding: '24px 64px',
+    flexDirection: 'column',
+}}>
+    <Box style={{ height: 96, flexDirection: 'row', alignItems: 'center', gap: 16 }}>
+        <Box style={{ width: 6, height: 44, background: '#2563EB' }} />
+        <Box style={{ flexDirection: 'column', justifyContent: 'center' }}>
+            <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1E3A8A', lineHeight: 1.25 }}>工具一 · 长文档阅读助手</Text>
+            <Text style={{ fontSize: 15, color: 'rgba(30,58,138,0.65)', lineHeight: 1.5 }}>代表工具：Kimi · 豆包 · NotebookLM</Text>
+        </Box>
+    </Box>
+    <Box style={{ height: 516, flexDirection: 'row', gap: 28 }}>
+        <Box style={{ width: 512, height: 516, borderRadius: 16, overflow: 'hidden', background: '#FFFFFF' }}>
+            <Image
+                src='assets/tool1_reading.png'
+                style={{ width: 512, height: 516, objectFit: 'cover' }}
+            />
+        </Box>
+        <Box style={{ width: 612, height: 516, flexDirection: 'column', gap: 14 }}>
+            <Box style={{
+                background: '#1E3A8A',
+                borderRadius: 14,
+                padding: '16px 22px',
+                flexDirection: 'row',
+                gap: 14,
+                alignItems: 'center',
+            }}>
+                <FAIcon name='compass' style={{ fill: '#F4F7FF', width: 26, height: 26 }} />
+                <Box style={{ flexDirection: 'column' }}>
+                    <Text style={{ fontSize: 14, color: 'rgba(244,247,255,0.7)', lineHeight: 1.4 }}>一句话定位</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1.45 }}>把上百页文献「读薄」，先看懂、再精读</Text>
+                </Box>
+            </Box>
+            <Box style={{
+                background: '#FFFFFF',
+                border: '1px solid rgba(37,99,235,0.22)',
+                borderRadius: 14,
+                padding: '18px 22px',
+                flexDirection: 'column',
+            }}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#2563EB', lineHeight: 1.4 }}>3 个核心功能</Text>
+                <Box style={{ height: 14 }} />
+                <Box style={{ flexDirection: 'row', gap: 12, alignItems: 'flex-start' }}>
+                    <FAIcon name='book-open' style={{ fill: '#2563EB', width: 22, height: 22 }} />
+                    <Box style={{ flexDirection: 'column' }}>
+                        <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1E3A8A', lineHeight: 1.4 }}>长文速读</Text>
+                        <Text style={{ fontSize: 16, color: '#111827', lineHeight: 1.5 }}>上百页 PDF / 课件一次投喂，自动出摘要与提纲</Text>
+                    </Box>
+                </Box>
+                <Box style={{ height: 12 }} />
+                <Box style={{ flexDirection: 'row', gap: 12, alignItems: 'flex-start' }}>
+                    <FAIcon name='comment-dots' style={{ fill: '#2563EB', width: 22, height: 22 }} />
+                    <Box style={{ flexDirection: 'column' }}>
+                        <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1E3A8A', lineHeight: 1.4 }}>追问释义</Text>
+                        <Text style={{ fontSize: 16, color: '#111827', lineHeight: 1.5 }}>圈出读不懂的段落逐句追问，像助教一样讲透</Text>
+                    </Box>
+                </Box>
+                <Box style={{ height: 12 }} />
+                <Box style={{ flexDirection: 'row', gap: 12, alignItems: 'flex-start' }}>
+                    <FAIcon name='layer-group' style={{ fill: '#2563EB', width: 22, height: 22 }} />
+                    <Box style={{ flexDirection: 'column' }}>
+                        <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1E3A8A', lineHeight: 1.4 }}>跨文对比</Text>
+                        <Text style={{ fontSize: 16, color: '#111827', lineHeight: 1.5 }}>多篇文献一键比对观点与结论，快速定位差异</Text>
+                    </Box>
+                </Box>
+            </Box>
+            <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10, paddingLeft: 4 }}>
+                <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#2563EB', lineHeight: 1.4 }}>上手难度</Text>
+                <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+                    <Text style={{ fontSize: 16, color: '#2563EB', lineHeight: 1.4 }}>★</Text>
+                    <Text style={{ fontSize: 16, color: 'rgba(37,99,235,0.28)', lineHeight: 1.4 }}>★★</Text>
+                </Box>
+                <Text style={{ fontSize: 14, color: 'rgba(30,58,138,0.6)', lineHeight: 1.4 }}>极易上手 · 会打字就会用</Text>
+            </Box>
+            <Box style={{
+                marginTop: 'auto',
+                background: 'rgba(37,99,235,0.10)',
+                borderRadius: 14,
+                padding: '16px 22px',
+                flexDirection: 'row',
+                gap: 12,
+                alignItems: 'flex-start',
+            }}>
+                <FAIcon name='graduation-cap' style={{ fill: '#2563EB', width: 22, height: 22 }} />
+                <Box style={{ flexDirection: 'column' }}>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1E3A8A', lineHeight: 1.4 }}>适用场景</Text>
+                    <Text style={{ fontSize: 17, color: '#111827', lineHeight: 1.55 }}>期末带 5 篇英文文献先出摘要再精读 · 200 页课件压缩成一页提纲 · 预习时判断文章值不值得细读</Text>
+                </Box>
+            </Box>
+        </Box>
+    </Box>
+    <Box style={{ height: 60, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Text style={{ fontSize: 14, color: 'rgba(30,58,138,0.45)' }}>大学生必备AI工具使用指南</Text>
+        <Text style={{ fontSize: 14, color: 'rgba(30,58,138,0.45)' }}>02 / 05</Text>
+    </Box>
+</Slide>

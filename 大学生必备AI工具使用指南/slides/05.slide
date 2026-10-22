@@ -1,0 +1,107 @@
+<Slide style={{
+    width: '1280px',
+    height: '720px',
+    background: '#F4F7FF',
+    padding: '24px 64px',
+    flexDirection: 'column',
+}}>
+    <Box style={{ height: 96, flexDirection: 'row', alignItems: 'center', gap: 16 }}>
+        <Box style={{ width: 6, height: 44, background: '#2563EB' }} />
+        <Box style={{ flexDirection: 'column', justifyContent: 'center' }}>
+            <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1E3A8A', lineHeight: 1.25 }}>总结 · 把 AI 用成副驾驶</Text>
+            <Text style={{ fontSize: 15, color: 'rgba(30,58,138,0.65)', lineHeight: 1.5 }}>读 · 写 · 做，三条要点收束全篇</Text>
+        </Box>
+    </Box>
+    <Box style={{ height: 516, flexDirection: 'column', alignItems: 'center' }}>
+        <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 24 }}>
+            <Text style={{ fontSize: 96, fontWeight: 'bold', color: '#2563EB', lineHeight: 1.0 }}>3</Text>
+            <Box style={{ flexDirection: 'column', gap: 4 }}>
+                <Text style={{ fontSize: 40, fontWeight: 'bold', color: '#1E3A8A', lineHeight: 1.2 }}>条使用要点</Text>
+                <Text style={{ fontSize: 20, color: 'rgba(30,58,138,0.7)', lineHeight: 1.5 }}>先自己想 · 再让 AI 拓展 · 最后人工核验</Text>
+            </Box>
+        </Box>
+        <Box style={{ height: 18 }} />
+        <Box style={{ width: 940, flexDirection: 'column' }}>
+            <Box style={{ flexDirection: 'row', gap: 18, alignItems: 'flex-start' }}>
+                <Box style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: 22,
+                    background: '#2563EB',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#F4F7FF' }}>读</Text>
+                </Box>
+                <Box style={{ flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1E3A8A', lineHeight: 1.4 }}>先读后筛，再回原文核对</Text>
+                    <Text style={{ fontSize: 18, color: '#111827', lineHeight: 1.5 }}>长文档助手帮你快速判断重点，但真正的理解必须回原文自己完成。</Text>
+                </Box>
+            </Box>
+            <Box style={{ height: 18 }} />
+            <Box style={{ flexDirection: 'row', gap: 18, alignItems: 'flex-start' }}>
+                <Box style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: 22,
+                    background: '#2563EB',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#F4F7FF' }}>写</Text>
+                </Box>
+                <Box style={{ flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1E3A8A', lineHeight: 1.4 }}>先搭框架，再让 AI 扩写</Text>
+                    <Text style={{ fontSize: 18, color: '#111827', lineHeight: 1.5 }}>写作与代码交给助手提速，但立意、结构与结论由你拍板。</Text>
+                </Box>
+            </Box>
+            <Box style={{ height: 18 }} />
+            <Box style={{ flexDirection: 'row', gap: 18, alignItems: 'flex-start' }}>
+                <Box style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: 22,
+                    background: '#2563EB',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#F4F7FF' }}>做</Text>
+                </Box>
+                <Box style={{ flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1E3A8A', lineHeight: 1.4 }}>先有观点，再交给模板</Text>
+                    <Text style={{ fontSize: 18, color: '#111827', lineHeight: 1.5 }}>演示、海报、视频能一键生成，省下的是排版时间，不是思考时间。</Text>
+                </Box>
+            </Box>
+        </Box>
+        <Box style={{ height: 18 }} />
+        <Box style={{
+            width: 940,
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 14,
+            background: 'rgba(37,99,235,0.10)',
+            borderLeft: '4px solid #2563EB',
+            borderRadius: 14,
+            padding: '12px 22px',
+        }}>
+            <FAIcon name='arrow-right' style={{ fill: '#2563EB', width: 20, height: 20 }} />
+            <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#2563EB', lineHeight: 1.4 }}>下一步行动</Text>
+            <Text style={{ fontSize: 17, color: '#111827', lineHeight: 1.5 }}>① 选一个工具上手 → ② 用它完成一件真实作业 → ③ 复盘 AI 帮到你的地方与必须自己判断的地方</Text>
+        </Box>
+        <Box style={{ height: 18 }} />
+        <Box style={{
+            width: 940,
+            background: '#1E3A8A',
+            borderRadius: 14,
+            padding: '18px 24px',
+            justifyContent: 'center',
+            alignItems: 'center',
+        }}>
+            <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#F4F7FF', lineHeight: 1.3 }}>工具决定效率，判断力决定成绩</Text>
+        </Box>
+    </Box>
+    <Box style={{ height: 60, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Text style={{ fontSize: 14, color: 'rgba(30,58,138,0.45)' }}>大学生必备AI工具使用指南</Text>
+        <Text style={{ fontSize: 14, color: 'rgba(30,58,138,0.45)' }}>05 / 05</Text>
+    </Box>
+</Slide>

@@ -1,0 +1,64 @@
+# ============================================================
+# 个人作品集仓库 - 忽略规则
+# 说明：这里列出的文件/文件夹只是"不上传到 GitHub"，
+#       本地文件不会丢失，不会被删除。
+# ============================================================
+
+# ---------- 系统与缓存 ----------
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+.tmp*
+.tmp_rid
+
+# ---------- 编辑器 / IDE ----------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# ---------- Node.js ----------
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# ---------- 密钥与本地配置（切勿上传） ----------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+config.local.*
+
+# ---------- Office 临时文件 ----------
+~$*.docx
+~$*.xlsx
+~$*.pptx
+*.tmp
+
+# ---------- 自动生成的产物 ----------
+output/
+dist/
+build/
+.cache/
+
+# ---------- AI 工具本地数据 ----------
+.workbuddy/
+codebuddy
+codebuddy/
+.codebuddy/
+.slidep/

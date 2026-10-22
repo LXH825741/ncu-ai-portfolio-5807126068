@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>十城市实时天气对比表</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(160deg, #eef4ff 0%, #e6edf7 45%, #eef2f7 100%);
+    min-height: 100vh;
+    padding: 36px 20px 48px;
+    color: #1f2d3d;
+    display: flex;
+    justify-content: center;
+  }
+
+  .wrap { width: 100%; max-width: 1100px; }
+
+  /* ---------- 页头 ---------- */
+  .head {
+    background: linear-gradient(135deg, #eaf4ff 0%, #d2e7ff 55%, #e6f2ff 100%);
+    border: 1px solid #fff;
+    border-radius: 18px;
+    padding: 26px 28px;
+    box-shadow: 0 8px 30px rgba(61, 126, 255, .14);
+    margin-bottom: 20px;
+  }
+
+  .head h1 { font-size: 23px; font-weight: 600; color: #1b3a5c; letter-spacing: .5px; }
+
+  .head .sub { margin-top: 8px; font-size: 13px; color: #3d6f9e; }
+
+  .meta { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 6px 14px; font-size: 12px;
+    color: #2b64d6;
+    background: rgba(61, 126, 255, .1);
+    border: 1px solid rgba(61, 126, 255, .22);
+    border-radius: 20px;
+  }
+
+  .chip::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: #3d7eff; box-shadow: 0 0 0 3px rgba(61, 126, 255, .18);
+  }
+
+  .chip.plain::before { display: none; }
+
+  /* ---------- 表格卡片 ---------- */
+  .card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 30px rgba(31, 45, 61, .08);
+    overflow: hidden;
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+
+  thead th {
+    background: #f6f9fe;
+    color: #5b7a9e;
+    font-weight: 500;
+    font-size: 12.5px;
+    letter-spacing: .5px;
+    text-align: left;
+    padding: 15px 18px;
+    border-bottom: 1px solid #e4e9f0;
+    white-space: nowrap;
+  }
+
+  thead th.num, tbody td.num { text-align: right; }
+  thead th.mid, tbody td.mid { text-align: center; }
+
+  tbody td {
+    padding: 15px 18px;
+    border-bottom: 1px solid #eef2f7;
+    vertical-align: middle;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: #f8fbff; }
+
+  .city { font-weight: 600; color: #1b3a5c; white-space: nowrap; }
+
+  /* 温度单元格：数值 + 迷你条形图 */
+  .temp-cell { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+
+  .bar-track {
+    width: 62px; height: 6px; border-radius: 3px;
+    background: #eaf0f9; overflow: hidden; flex: 0 0 auto;
+  }
+
+  .bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #7fb2ff, #3d7eff); }
+
+  .temp-val { font-weight: 600; color: #1b3a5c; white-space: nowrap; }
+
+  .hum { color: #3d6f9e; white-space: nowrap; }
+  .wind { color: #5b7a9e; white-space: nowrap; font-size: 13px; }
+
+  /* 空气质量徽章 */
+  .badge {
+    display: inline-block; padding: 4px 12px;
+    border-radius: 20px; font-size: 13px; font-weight: 600; white-space: nowrap;
+  }
+
+  .aqi-优    { background: #e5f7ec; color: #1f9d55; }
+  .aqi-良    { background: #fdf6dd; color: #b8901a; }
+  .aqi-轻度污染 { background: #fdeee2; color: #d97706; }
+  .aqi-中度污染 { background: #fde6e0; color: #dc5a3c; }
+  .aqi-重度污染 { background: #f6e3ef; color: #a4388c; }
+
+  /* ---------- 脚注 ---------- */
+  .foot { margin-top: 18px; font-size: 12px; color: #93a4b8; line-height: 1.9; }
+  .foot b { color: #6b8299; font-weight: 600; }
+
+  @media (max-width: 720px) {
+    body { padding: 20px 12px 32px; }
+    .head { padding: 20px; }
+    thead th, tbody td { padding: 12px 10px; font-size: 13px; }
+    .bar-track { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="head">
+    <h1>十城市实时天气对比</h1>
+    <div class="sub">北京 · 上海 · 广州 · 深圳 · 成都 · 杭州 · 武汉 · 西安 · 南京 · 重庆</div>
+    <div class="meta">
+      <span class="chip" id="stamp"></span>
+      <span class="chip plain">数据来源：各地气象台 / 中国天气网</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>城市</th>
+          <th>天气状况</th>
+          <th class="num">温度</th>
+          <th class="num">湿度</th>
+          <th>风力</th>
+          <th>空气质量</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+
+  <div class="foot">
+    <div><b>采集时间</b>：2026-10-12（各地气象台实况，读数分布在 09:00–12:30 之间）</div>
+    <div><b>温度说明</b>：为采集时段的实况气温，<b>非当日最高温</b>；当日最高气温普遍更高（广州 33℃、深圳 32℃、武汉 30℃、上海 26℃、成都 26℃、南京 26℃、北京 22℃、西安 22℃）。</div>
+    <div><b>空气质量</b>：按中国标准折算（优 0–50 / 良 51–100 / 轻度污染 101–150）。不同站点口径存在差异，此处取较一致的中值。</div>
+    <div><b>天气预警</b>：北京、南京、西安早晨有雾或霾；广州、深圳发布森林火险橙色/黄色预警。</div>
+  </div>
+
+</div>
+
+<script>
+/* 2026-10-12 实况采集数据
+   cond 天气状况 | temp 温度(℃) | humidity 湿度(%) | wind 风力
+   aqi 空气质量指数 | level 等级 */
+const STAMP = "2026-10-12";
+
+const DATA = [
+  { city: "北京", cond: "多云转阴",   temp: 19, humidity: 86, wind: "北风 2-3 级",   aqi: 133, level: "轻度污染" },
+  { city: "上海", cond: "多云",       temp: 23, humidity: 71, wind: "西北风 2-3 级", aqi: 40,  level: "优" },
+  { city: "广州", cond: "晴间多云",   temp: 31, humidity: 58, wind: "东南风 3 级",   aqi: 52,  level: "良" },
+  { city: "深圳", cond: "晴天间多云", temp: 29, humidity: 67, wind: "东风 3 级",     aqi: 28,  level: "优" },
+  { city: "成都", cond: "多云",       temp: 19, humidity: 95, wind: "北风 2 级",     aqi: 25,  level: "优" },
+  { city: "杭州", cond: "晴",         temp: 24, humidity: 89, wind: "西风 1-2 级",   aqi: 90,  level: "良" },
+  { city: "武汉", cond: "晴",         temp: 26, humidity: 69, wind: "东南风 2-3 级", aqi: 105, level: "轻度污染" },
+  { city: "西安", cond: "小雨转阴",   temp: 17, humidity: 97, wind: "西风 2-3 级",   aqi: 55,  level: "良" },
+  { city: "南京", cond: "晴",         temp: 24, humidity: 89, wind: "东北风 2 级",   aqi: 35,  level: "优" },
+  { city: "重庆", cond: "阴",         temp: 23, humidity: 83, wind: "西风 2 级",     aqi: 54,  level: "良" }
+];
+
+const AQI_CLASS = {
+  "优": "aqi-优", "良": "aqi-良",
+  "轻度污染": "aqi-轻度污染", "中度污染": "aqi-中度污染", "重度污染": "aqi-重度污染"
+};
+
+document.getElementById("stamp").textContent = "采集时间：" + STAMP;
+
+/* 温度条形图：以 15℃ 为下限、35℃ 为满格，便于横向比较 */
+const BASE = 15, FULL = 35;
+const pct = t => Math.max(6, Math.min(100, (t - BASE) / (FULL - BASE) * 100));
+
+document.getElementById("rows").innerHTML = DATA.map(d => `
+  <tr>
+    <td class="city">${d.city}</td>
+    <td>${d.cond}</td>
+    <td class="num">
+      <div class="temp-cell">
+        <div class="bar-track"><div class="bar-fill" style="width:${pct(d.temp)}%"></div></div>
+        <span class="temp-val">${d.temp}℃</span>
+      </div>
+    </td>
+    <td class="num hum">${d.humidity}%</td>
+    <td class="wind">${d.wind}</td>
+    <td><span class="badge ${AQI_CLASS[d.level] || "aqi-良"}">${d.level} ${d.aqi}</span></td>
+  </tr>
+`).join("");
+</script>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<Slide style={{
+    width: '1280px',
+    height: '720px',
+    position: 'relative',
+    background: '#F4F7FF',
+    overflow: 'hidden',
+    padding: 0,
+}}>
+    <Image
+        src='assets/cover_campus_ai.png'
+        style={{
+            position: 'absolute',
+            left: 520,
+            top: 0,
+            width: 760,
+            height: 750,
+            objectFit: 'cover',
+        }}
+    />
+    <Box style={{
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: 520,
+        height: 720,
+        background: '#1E3A8A',
+        padding: '56px 48px',
+        flexDirection: 'column',
+    }}>
+        <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+            <Box style={{ width: 6, height: 24, background: '#2563EB' }} />
+            <Text style={{ fontSize: 18, color: 'rgba(255,255,255,0.75)', letterSpacing: 2 }}>学习效率手册</Text>
+        </Box>
+        <Box style={{ height: 40 }} />
+        <Text style={{ fontSize: 64, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1.15 }}>大学生必备</Text>
+        <Text style={{ fontSize: 42, fontWeight: 'bold', color: 'rgba(255,255,255,0.9)', lineHeight: 1.2 }}>AI工具使用指南</Text>
+        <Box style={{ height: 24 }} />
+        <Box style={{ width: 96, height: 2, background: 'rgba(255,255,255,0.35)' }} />
+        <Box style={{ height: 20 }} />
+        <Text style={{ fontSize: 26, color: 'rgba(255,255,255,0.92)', lineHeight: 1.4 }}>——零基础入门，快速上手</Text>
+        <Box style={{ height: 12 }} />
+        <Text style={{ fontSize: 18, color: 'rgba(255,255,255,0.62)', lineHeight: 1.5 }}>三类工具 · 读 · 写 · 做</Text>
+        <Box style={{ flex: 1 }} />
+        <Box style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+            <Text style={{ fontSize: 14, color: 'rgba(255,255,255,0.55)' }}>校园学习经验分享 · 2026</Text>
+            <Text style={{ fontSize: 14, color: 'rgba(255,255,255,0.75)' }}>01 / 05</Text>
+        </Box>
+    </Box>
+    <Box style={{
+        position: 'absolute',
+        left: 514,
+        top: 300,
+        width: 6,
+        height: 96,
+        background: '#2563EB',
+    }} />
+</Slide>
